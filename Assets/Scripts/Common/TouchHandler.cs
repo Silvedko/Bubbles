@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class TouchHandler : MonoBehaviour {
-
-	int counter = 0;
-
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -15,7 +13,7 @@ public class TouchHandler : MonoBehaviour {
 	void Update () 
 	{
 		if (Input.GetMouseButtonDown (0)) 
-						CheckTouch ();
+			CheckTouch ();
 	}
 
 
@@ -25,8 +23,7 @@ public class TouchHandler : MonoBehaviour {
 		
 		if(hit.collider != null)
 		{
-			counter ++;
-			Debug.Log(hit.collider.gameObject.name + counter);
+			Debug.Log(hit.collider.gameObject.name);
 		}
 
 	}
