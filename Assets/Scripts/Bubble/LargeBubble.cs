@@ -13,8 +13,8 @@ public class LargeBubble : Bubble
 	
 	private void Moving (GameObject gO, float t)
 	{
-		Vector3 objPos = new Vector3 (0f, yPos, 0f);
-		yPos -= t;
+		Vector3 objPos = new Vector3 (yPos, 0f, 0f);
+		yPos += t;
 		gO.transform.localPosition = objPos;
 	}
 	

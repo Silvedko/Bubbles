@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class TouchHandler : MonoBehaviour {
-	
+
+	int counter = 0;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -23,7 +25,8 @@ public class TouchHandler : MonoBehaviour {
 		
 		if(hit.collider != null)
 		{
-			Destroy(hit.collider.gameObject);
+			counter ++;
+			Debug.Log(hit.collider.gameObject.name + " " + counter);
 		}
 
 	}
