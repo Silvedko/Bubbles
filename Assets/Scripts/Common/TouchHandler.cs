@@ -23,7 +23,7 @@ public class TouchHandler : MonoBehaviour {
 		
 		if(hit.collider != null)
 		{
-			Debug.Log(hit.collider.gameObject.name);
+			Destroy(hit.collider.gameObject);
 		}
 
 	}

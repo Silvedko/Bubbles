@@ -13,11 +13,6 @@ public class AutoScaleObjects : MonoBehaviour {
 		widthHeightRatio = (float) Screen.width / Screen.height;
 		SetScale ();
 	}
-	
-	void Update () 
-	{
-		
-	}
 
 	void SetScale ()
 	{
