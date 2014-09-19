@@ -9,6 +9,8 @@ public class GameManager : MonoSingleton <GameManager>
 		get {return lifeCount;}
 		set {lifeCount = value;}
 	}
+
+
 	
 	public override void Init () 
 	{

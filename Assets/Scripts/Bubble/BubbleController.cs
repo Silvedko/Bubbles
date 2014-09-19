@@ -4,47 +4,57 @@ using System.Collections;
 public class BubbleController : MonoBehaviour {
 
 	public Bubble bubble;
+	public Sprite sprite;
+
 	float speed = 0.01f;
 	bool isMoving = true;
 
 	void Start () 
 	{
 
-		bubble = new LargeBubble ();
+		bubble = SetBubbleObject() ;
 		StartCoroutine (MonsterMove ());
 	}
 	
-	void Update () 
+	Bubble SetBubbleObject () 
 	{
-//		SetPixelInsetToGUITexture ();
-		SetColliderPosition (transform.position, transform.localScale);
+		GameConstants.GameObjectSizes textureSize;
+		textureSize = (GameConstants.GameObjectSizes) sprite.texture.width;
+		return ChooseObjFromSize(textureSize);
 	}
-	
-	//Set collider center position
-	protected void SetColliderPosition (Vector3 pos, Vector3 scale)
+
+	Bubble ChooseObjFromSize (GameConstants.GameObjectSizes size)
 	{
-//		CircleCollider2D collider = (CircleCollider2D) gameObject.collider2D;
-//		collider.center = new Vector2 (pos.x / scale.y, 
-//		                               pos.y / scale.y);
-	}
-	
-	
-	// Set PixelInset because GUITexture center is the lower left corner
-	protected void SetPixelInsetToGUITexture ()
-	{
-		var texture = gameObject.GetComponent<GUITexture> ();
-		texture.pixelInset = new Rect (Camera.main.pixelWidth / 2 * transform.position.x, Camera.main.pixelHeight / 2 * transform.position.y, 0f, 0f);
+		switch (size) 
+		{
+			case GameConstants.GameObjectSizes.Small :
+				return new SmallBubble {yPos = gameObject.transform.position.y};
+				break;
+			case GameConstants.GameObjectSizes.Medium :
+				return new Mediumbubble {yPos = gameObject.transform.position.y};
+				break;
+			case GameConstants.GameObjectSizes.Large :
+				return new LargeBubble {yPos = gameObject.transform.position.y};
+				break;
+			case GameConstants.GameObjectSizes.ExtraLarge :
+				return new ExtraLargeBubble {yPos = gameObject.transform.position.y};
+			break;
+		}
 	}
 
 	IEnumerator MonsterMove ()
 	{
 		while (isMoving) 
 		{
-			Debug.Log("Move! ");
 			yield return new WaitForSeconds (0.05f);
-			if(gameObject.transform.position.x >= 0.4f)
+			if(gameObject.transform.position.y <= -1.4f)
 				isMoving = false;
 			bubble.Move (gameObject, speed);
 		}
+	}
+
+	void OnBecameInvisible ()
+	{
+		Debug.Log ("INVISIBLE!!!!");
 	}
 }
