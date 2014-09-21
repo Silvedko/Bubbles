@@ -3,21 +3,30 @@ using System.Collections;
 
 public class ObjectStateHandler : MonoBehaviour
 {
+	NotificationCenter ntfCenter = null;
 	void Start ()
 	{
-		NotificationCenter.DefaultCenter.AddObserver (this, GameConstants.bubbleBlowNotificationMessage);
-		NotificationCenter.DefaultCenter.AddObserver (this, GameConstants.bubbleDeniedNotificationMessage);
-		Debug.Log ("Textures Count = " + GameManager.Instance.textures.Count);
+		ntfCenter = NotificationCenter.DefaultCenter;
+		ntfCenter.AddObserver (this, GameConstants.onBubbleBlowNotificationMessage);
+		ntfCenter.AddObserver (this, GameConstants.onBubbleDeniedNotificationMessage);
 	}
 
 	void OnDestroy ()
 	{
-		NotificationCenter.DefaultCenter.RemoveObserver (this, GameConstants.bubbleBlowNotificationMessage);
-		NotificationCenter.DefaultCenter.RemoveObserver (this, GameConstants.bubbleDeniedNotificationMessage);
+		if (ntfCenter != null && !ntfCenter.Equals (null)) 
+		{
+			ntfCenter.RemoveObserver (this, GameConstants.onBubbleBlowNotificationMessage);
+			ntfCenter.RemoveObserver (this, GameConstants.onBubbleDeniedNotificationMessage);
+		}
 	}
 
-	void BubbleBlow(NotificationCenter.Notification notification)
+	void OnBubbleBlow (NotificationCenter.Notification notification)
 	{
-//		notification.goSender;
+		GameManager.Instance.AddGameObjectToPool(notification.goSender);
+	}
+
+	void OnBubbleDenied (NotificationCenter.Notification notification)
+	{
+		GameManager.Instance.AddGameObjectToPool(notification.goSender);
 	}
 }

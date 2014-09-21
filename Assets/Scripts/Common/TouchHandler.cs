@@ -1,14 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
-
 
 public class TouchHandler : MonoBehaviour 
 {	
-	void Start ()
-	{
-
-	}
-
 	void Update () 
 	{
 		if (Input.GetMouseButtonDown (0)) 
@@ -22,8 +16,7 @@ public class TouchHandler : MonoBehaviour
 		
 		if(hit.collider != null)
 		{
-			NotificationCenter.DefaultCenter.PostNotification(this, "BubbleBlow", hit.collider.gameObject);
-//			Destroy(hit.collider.gameObject);
+			NotificationCenter.DefaultCenter.PostNotification(this, GameConstants.onBubbleBlowNotificationMessage, hit.collider.gameObject);
 		}
 	}
 }

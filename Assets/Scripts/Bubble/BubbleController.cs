@@ -3,24 +3,22 @@ using System.Collections;
 
 public class BubbleController : MonoBehaviour 
 {
-
 	public Bubble bubble;
 	public Sprite sprite;
+	public bool isMoving = true;
 
 	float speed = 0.01f;
-	bool isMoving = true;
+	float delay = 0.01f;
+	NotificationCenter ntfCenter = null;
 
 	void Start () 
 	{
-		for (int i = 0; i < GameManager.Instance.textures.Count; i++) 
-		{
-			Debug.Log (GameManager.Instance.textures[i].name);
-		}
+		ntfCenter = NotificationCenter.DefaultCenter;
 
 		sprite = gameObject.GetComponent <SpriteRenderer> ().sprite;
-		bubble = SetBubbleObject() ;
-		StartCoroutine (MonsterMove ());
-
+		bubble = SetBubbleObject();
+		speed = 0.5f / sprite.texture.width ;
+		StartCoroutine (MonsterMoveWithDelay (delay));
 	}
 
 	Bubble SetBubbleObject () 
@@ -54,23 +52,17 @@ public class BubbleController : MonoBehaviour
 		return bubble;
 	}
 
-	IEnumerator MonsterMove ()
+	IEnumerator MonsterMoveWithDelay (float aDelay)
 	{
 		while (isMoving) 
 		{
-			yield return new WaitForSeconds (0.01f);
+			yield return new WaitForSeconds (aDelay);
 			if(gameObject.transform.position.y <= -1.0f - sprite.texture.width / 2 / Camera.main.pixelWidth)
 			{
 				isMoving = false;
-				NotificationCenter.DefaultCenter.PostNotification (this, GameConstants.bubbleBlowNotificationMessage, gameObject);
+				ntfCenter.PostNotification (this, GameConstants.onBubbleDeniedNotificationMessage, gameObject);
 			}
 			bubble.Move (gameObject, speed);
 		}
-	}
-
-	void OnBecameInvisible ()
-	{
-		Debug.Log ("INVISIBLE!!!!");
-
 	}
 }

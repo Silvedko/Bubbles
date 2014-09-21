@@ -14,8 +14,9 @@ public class GameConstants
 
 	#region Notification Constants
 
-		public static string bubbleBlowNotificationMessage = "BubbleBlow";
-		public static string bubbleDeniedNotificationMessage = "BubbleDenied";
+		public static string onBubbleBlowNotificationMessage = "OnBubbleBlow";
+		public static string onBubbleDeniedNotificationMessage = "OnBubbleDenied";
+		public static string onTextureDownloading = "OnLoadComplete";
 
 	#endregion
 
