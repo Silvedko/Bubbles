@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SmallBubble : MonoBehaviour {
+public class SmallBubble : Bubble 
+{
+	public override void Move (GameObject gO, float speed)
+	{
+		Moving (gO, speed);
+	}
+	
+	
+	private void Moving (GameObject gO, float t)
+	{
+		Vector3 objPos = new Vector3 (gO.transform.localPosition.x, yPos , 0f);
+		yPos -= t;
+		gO.transform.localPosition = objPos;
+	}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
