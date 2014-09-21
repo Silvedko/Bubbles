@@ -18,29 +18,26 @@ public class TextureGenerator : MonoBehaviour {
 
 		gOSprite = Sprite.Create (generatedTexture, new Rect (0f, 0f, 32f, 32f), Vector2.zero);
 
-//		gOSprite.name = "SmallIcon" ;
-
 		gameObject.GetComponent<SpriteRenderer> ().sprite = gOSprite;
 		renderer.material.mainTexture = gOSprite.texture;
+		gameObject.GetComponent<SpriteRenderer> ().material.SetTexture ("CullingMask", GameManager.Instance.textures [0]);
+
 	}
 
-
-
-
-	private void StartThreads()
-	{
-		for (int i = 0; i < gOSprite.texture.height; i++)
-		{
-			System.Threading.ThreadStart pts = new System.Threading.ThreadStart(ThreadedColorCopy);
-			System.Threading.Thread workerForOneRow = new System.Threading.Thread(pts);
-			workerForOneRow.Start(i);
-		}
-	}
-
-	private void ThreadedColorCopy()
-	{
-		GenerateTexture (textureWidth);
-	}
+//	private void StartThreads()
+//	{
+//		for (int i = 0; i < 4; i++)
+//		{
+//			System.Threading.ThreadStart pts = new System.Threading.ThreadStart(ThreadedColorCopy);
+//			System.Threading.Thread workerForOneRow = new System.Threading.Thread(pts);
+//			workerForOneRow.Start(i);
+//		}
+//	}
+//
+//	private void ThreadedColorCopy()
+//	{
+//		GenerateTexture (textureWidth);
+//	}
 
 	private void GenerateTexture (int textureWidth)
 	{
@@ -56,17 +53,19 @@ public class TextureGenerator : MonoBehaviour {
 		for (int i = 0; i < texture.width; i++)
 			for (int j = 0; j < texture.height; j++) 
 			{
-				texture.SetPixel (i, j, new Color (50f / 255f, (i * 255 / texture.width) / 255f, (j * 255 / texture.width) / 255f, 255f));
+				texture.SetPixel (i, j, GetRandomColor());
 			}
 			texture.Apply();
 
 		return texture;
 	}
 
-	
-	// Update is called once per frame
-	void Update () 
+	private Color GetRandomColor ()
 	{
-		
+		float r = (Random.Range (0f, 255f)) / 255f;
+		float g = (Random.Range (0f, 255f)) / 255f;
+		float b = (Random.Range (0f, 255f)) / 255f;
+
+		return new Color (r, g, b, 1.0f);
 	}
 }
