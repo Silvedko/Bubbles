@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BubbleController : MonoBehaviour {
+public class BubbleController : MonoBehaviour 
+{
 
 	public Bubble bubble;
 	public Sprite sprite;
@@ -12,10 +13,13 @@ public class BubbleController : MonoBehaviour {
 	void Start () 
 	{
 
+
+		sprite = gameObject.GetComponent <SpriteRenderer> ().sprite;
 		bubble = SetBubbleObject() ;
 		StartCoroutine (MonsterMove ());
+
 	}
-	
+
 	Bubble SetBubbleObject () 
 	{
 		GameConstants.GameObjectSizes textureSize;
@@ -25,30 +29,38 @@ public class BubbleController : MonoBehaviour {
 
 	Bubble ChooseObjFromSize (GameConstants.GameObjectSizes size)
 	{
+		Bubble bubble;
 		switch (size) 
 		{
 			case GameConstants.GameObjectSizes.Small :
-				return new SmallBubble {yPos = gameObject.transform.position.y};
+				bubble = new SmallBubble {yPos = gameObject.transform.position.y};
 				break;
 			case GameConstants.GameObjectSizes.Medium :
-				return new Mediumbubble {yPos = gameObject.transform.position.y};
+				bubble = new MediumBubble {yPos = gameObject.transform.position.y};
 				break;
 			case GameConstants.GameObjectSizes.Large :
-				return new LargeBubble {yPos = gameObject.transform.position.y};
+				bubble = new LargeBubble {yPos = gameObject.transform.position.y};
 				break;
 			case GameConstants.GameObjectSizes.ExtraLarge :
-				return new ExtraLargeBubble {yPos = gameObject.transform.position.y};
-			break;
+				bubble = new ExtraLargeBubble {yPos = gameObject.transform.position.y};
+				break;
+			default: 
+				bubble = new Bubble ();
+				break;
 		}
+		return bubble;
 	}
 
 	IEnumerator MonsterMove ()
 	{
 		while (isMoving) 
 		{
-			yield return new WaitForSeconds (0.05f);
-			if(gameObject.transform.position.y <= -1.4f)
+			yield return new WaitForSeconds (0.01f);
+			if(gameObject.transform.position.y <= -1.0f - sprite.texture.width / 2 / Camera.main.pixelWidth)
+			{
 				isMoving = false;
+				NotificationCenter.DefaultCenter.PostNotification (this, GameConstants.bubbleBlowNotificationMessage);
+			}
 			bubble.Move (gameObject, speed);
 		}
 	}
@@ -56,5 +68,6 @@ public class BubbleController : MonoBehaviour {
 	void OnBecameInvisible ()
 	{
 		Debug.Log ("INVISIBLE!!!!");
+
 	}
 }

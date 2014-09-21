@@ -3,18 +3,28 @@ using System.Collections;
 
 public class GameManager : MonoSingleton <GameManager>
 {
-	private int lifeCount;
-	public int LifeCount
+	private int bubbleDropped;
+	public int BubbleDropped
 	{
-		get {return lifeCount;}
-		set {lifeCount = value;}
+		get {return bubbleDropped;}
+		set {bubbleDropped = value;}
+	}
+
+	public void IncreasePoints (int points)
+	{
+
+	}
+
+	public void DecreasePoints (int points)
+	{
+
 	}
 
 
 	
 	public override void Init () 
 	{
-
+		BubbleDropped = 0;
 	}
 
 }
