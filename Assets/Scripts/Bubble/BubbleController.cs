@@ -12,7 +12,10 @@ public class BubbleController : MonoBehaviour
 
 	void Start () 
 	{
-
+		for (int i = 0; i < GameManager.Instance.textures.Count; i++) 
+		{
+			Debug.Log (GameManager.Instance.textures[i].name);
+		}
 
 		sprite = gameObject.GetComponent <SpriteRenderer> ().sprite;
 		bubble = SetBubbleObject() ;
@@ -59,7 +62,7 @@ public class BubbleController : MonoBehaviour
 			if(gameObject.transform.position.y <= -1.0f - sprite.texture.width / 2 / Camera.main.pixelWidth)
 			{
 				isMoving = false;
-				NotificationCenter.DefaultCenter.PostNotification (this, GameConstants.bubbleBlowNotificationMessage);
+				NotificationCenter.DefaultCenter.PostNotification (this, GameConstants.bubbleBlowNotificationMessage, gameObject);
 			}
 			bubble.Move (gameObject, speed);
 		}

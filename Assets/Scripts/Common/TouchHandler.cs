@@ -22,7 +22,7 @@ public class TouchHandler : MonoBehaviour
 		
 		if(hit.collider != null)
 		{
-			NotificationCenter.DefaultCenter.PostNotification(this, "BubbleBlow");
+			NotificationCenter.DefaultCenter.PostNotification(this, "BubbleBlow", hit.collider.gameObject);
 //			Destroy(hit.collider.gameObject);
 		}
 	}

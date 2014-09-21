@@ -67,8 +67,8 @@ public class NotificationCenter : MonoBehaviour
 	// PostNotification sends a notification object to all objects that have requested to receive this type of notification.
 	// A notification can either be posted with a notification object or by just sending the individual components.
 	
-	public void PostNotification (Component aSender, string aName) { PostNotification(aSender, aName, null); }
-	public void PostNotification (Component aSender, string aName, Hashtable aData) { PostNotification(new Notification(aSender, aName, aData)); }
+	public void PostNotification (Component aSender, string aName, GameObject aGoSender) { PostNotification(aSender, aName, aGoSender, null); }
+	public void PostNotification (Component aSender, string aName, GameObject aGoSender, Hashtable aData) { PostNotification(new Notification(aSender, aName, aGoSender, aData)); }
 	public void PostNotification (Notification aNotification)
 	{
 		// First make sure that the name of the notification is valid.
@@ -112,12 +112,15 @@ public class NotificationCenter : MonoBehaviour
 		//{
 		//	throw new System.NotImplementedException ();
 		//}
-		
+
+		public GameObject goSender;
 		public Component sender;
 		public string name;
 		public Hashtable data;
-		public Notification (Component aSender, string aName) { sender = aSender; name = aName; data = null; }
+		public Notification (Component aSender, string aName, GameObject aGoSender) { sender = aSender; name = aName; goSender = aGoSender; data = null; }
 		public Notification (Component aSender, string aName, Hashtable aData) { sender = aSender; name = aName; data = aData; }
+		public Notification (Component aSender, string aName, GameObject aGoSender, Hashtable aData) { sender = aSender; name = aName; goSender = aGoSender; data = null; }
+
 		
 		
 	}
