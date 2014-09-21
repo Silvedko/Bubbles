@@ -17,11 +17,14 @@ public class GameManager : MonoSingleton <GameManager>
 	public void AddGameObjectToPool (GameObject go)
 	{
 		objectPool.Add (go);
+		go.SetActive (false);
 	}
 
-	public void RemoveGameObjectFromPool (GameObject go)
+	public GameObject RemoveGameObjectFromPool (GameObject go)
 	{
-		objectPool.Remove (go);
+		var myGo = objectPool.Find (g => g == go);
+		myGo.SetActive (true);
+		return myGo;
 	}
 
 	//Textures from www
