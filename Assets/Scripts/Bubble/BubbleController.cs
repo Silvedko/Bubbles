@@ -16,17 +16,21 @@ public class BubbleController : MonoBehaviour
 	{
 		ntfCenter = NotificationCenter.DefaultCenter;
 
-		sprite = gameObject.GetComponent <SpriteRenderer> ().sprite;
-		bubble = SetBubbleObject();
-		speed = 0.5f / sprite.texture.width ;
-		StartCoroutine (MonsterMoveWithDelay (delay));
+		bubble = SetBubbleObject((int)textureWidth);
+		speed = 0.5f / (int)textureWidth;
+		ReInitObject ();
+		ntfCenter.PostNotification (this, GameConstants.onBubbleCreated, gameObject);
+
 	}
 
-	Bubble SetBubbleObject () 
+	public void ReInitObject ()
 	{
-		GameConstants.GameObjectSizes textureSize;
-		textureSize = (GameConstants.GameObjectSizes) sprite.texture.width;
-		return ChooseObjFromSize(textureSize);
+		StartCoroutine (BubbleMoveWithDelay (delay));
+	}
+
+	Bubble SetBubbleObject (int size) 
+	{	
+		return ChooseObjFromSize((GameConstants.GameObjectSizes) size);
 	}
 
 	Bubble ChooseObjFromSize (GameConstants.GameObjectSizes size)
