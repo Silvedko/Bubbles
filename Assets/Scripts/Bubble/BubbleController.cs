@@ -12,18 +12,23 @@ public class BubbleController : MonoBehaviour
 	float delay = 0.01f;
 	NotificationCenter ntfCenter = null;
 
-	void Start () 
+	void Start ()
+	{
+		ReInitObject ();
+	}
+
+	public void ReInitObject () 
 	{
 		ntfCenter = NotificationCenter.DefaultCenter;
 
 		bubble = SetBubbleObject((int)textureWidth);
 		speed = 0.5f / (int)textureWidth;
-		ReInitObject ();
+		MoveObj ();
 		ntfCenter.PostNotification (this, GameConstants.onBubbleCreated, gameObject);
 
 	}
 
-	public void ReInitObject ()
+	public void MoveObj ()
 	{
 		StartCoroutine (BubbleMoveWithDelay (delay));
 	}
@@ -31,6 +36,13 @@ public class BubbleController : MonoBehaviour
 	Bubble SetBubbleObject (int size) 
 	{	
 		return ChooseObjFromSize((GameConstants.GameObjectSizes) size);
+	}
+
+	void OnDisable ()
+	{
+		bubble = null;
+		Destroy (sprite);
+
 	}
 
 	Bubble ChooseObjFromSize (GameConstants.GameObjectSizes size)
@@ -65,7 +77,9 @@ public class BubbleController : MonoBehaviour
 			if(gameObject.transform.position.y <= -1.0f - (int)textureWidth / 100 / 2) // 100 - Default ratio Pixels to Unit
 			{
 				isMoving = false;
+				gameObject.transform.position = new Vector3 (transform.position.x, 1f + (float)textureWidth / 100f / 2f, 0f);
 				ntfCenter.PostNotification (this, GameConstants.onBubbleDeniedNotificationMessage, gameObject);
+				break;
 			}
 			bubble.Move (gameObject, speed);
 		}
