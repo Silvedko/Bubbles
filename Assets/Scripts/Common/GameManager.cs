@@ -17,8 +17,7 @@ public class GameManager : MonoSingleton <GameManager>
 	public void AddGameObjectToPool (GameObject go)
 	{
 		objectPool.Add (go);
-		go.GetComponent <SpriteRenderer> ().material.mainTexture = null;
-		go.GetComponent <SpriteRenderer> ().sprite = null;
+
 		go.SetActive (false);
 	}
 

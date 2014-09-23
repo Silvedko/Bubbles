@@ -45,7 +45,10 @@ public class BubbleController : MonoBehaviour
 
 	void OnDisable ()
 	{
+		var sRenderer = gameObject.GetComponent <SpriteRenderer> ();
+		sRenderer.material.mainTexture = null;
 		bubble = null;
+		Destroy (sRenderer.material);
 		Destroy (sprite);
 	}
 
