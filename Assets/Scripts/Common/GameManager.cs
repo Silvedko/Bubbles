@@ -17,13 +17,17 @@ public class GameManager : MonoSingleton <GameManager>
 	public void AddGameObjectToPool (GameObject go)
 	{
 		objectPool.Add (go);
+		go.GetComponent <SpriteRenderer> ().material.mainTexture = null;
+		go.GetComponent <SpriteRenderer> ().sprite = null;
 		go.SetActive (false);
 	}
 
-	public GameObject RemoveGameObjectFromPool (GameObject go)
+	public GameObject GetGameObjectFromPool ()
 	{
-		var myGo = objectPool.Find (g => g == go);
+		var myGo = objectPool [0];
+		objectPool.RemoveAt (0);
 		myGo.SetActive (true);
+
 		return myGo;
 	}
 
@@ -45,9 +49,8 @@ public class GameManager : MonoSingleton <GameManager>
 	{
 		//If need to implement penalty's
 	}
-
-
 	
+
 	public override void Init () 
 	{
 		DontDestroyOnLoad (this);
@@ -56,4 +59,15 @@ public class GameManager : MonoSingleton <GameManager>
 		textures = new List<Texture> ();
 	}
 
+	void OnLevelWasLoaded (int level)
+	{
+		// Level 1 - is game scene, need to clear data when leave from this scene
+		if(level != 1)
+		{
+			objectPool.Clear ();
+			objectPool.TrimExcess ();
+			textures.Clear ();
+			textures.TrimExcess ();
+		}
+	}
 }
