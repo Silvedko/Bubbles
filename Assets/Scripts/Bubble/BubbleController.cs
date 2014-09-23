@@ -6,6 +6,7 @@ public class BubbleController : MonoBehaviour
 	public Bubble bubble;
 	public Sprite sprite;
 	public bool isMoving = true;
+	public GameConstants.GameObjectSizes textureWidth = GameConstants.GameObjectSizes.Small;
 
 	float speed = 0.01f;
 	float delay = 0.01f;
@@ -52,12 +53,12 @@ public class BubbleController : MonoBehaviour
 		return bubble;
 	}
 
-	IEnumerator MonsterMoveWithDelay (float aDelay)
+	IEnumerator BubbleMoveWithDelay (float aDelay)
 	{
 		while (isMoving) 
 		{
 			yield return new WaitForSeconds (aDelay);
-			if(gameObject.transform.position.y <= -1.0f - sprite.texture.width / 2 / Camera.main.pixelWidth)
+			if(gameObject.transform.position.y <= -1.0f - (int)textureWidth / 100 / 2) // 100 - Default ratio Pixels to Unit
 			{
 				isMoving = false;
 				ntfCenter.PostNotification (this, GameConstants.onBubbleDeniedNotificationMessage, gameObject);

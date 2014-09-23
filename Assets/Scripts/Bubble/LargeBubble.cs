@@ -11,9 +11,9 @@ public class LargeBubble : Bubble
 	
 	private void Moving (GameObject gO, float t)
 	{
-		Vector3 objPos = new Vector3 (gO.transform.localPosition.x, yPos , 0f);
+		Vector3 objPos = new Vector3 (gO.transform.position.x, yPos , 0f);
 		yPos -= t;
-		gO.transform.localPosition = objPos;
+		gO.transform.position = objPos;
 	}
 	
 }
