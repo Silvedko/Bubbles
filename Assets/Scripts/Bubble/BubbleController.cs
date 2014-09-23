@@ -5,7 +5,10 @@ public class BubbleController : MonoBehaviour
 {
 	public Bubble bubble;
 	public Sprite sprite;
+
+	//for stop moving
 	public bool isMoving = true;
+
 	public GameConstants.GameObjectSizes textureWidth = GameConstants.GameObjectSizes.Small;
 
 	float speed = 0.01f;
@@ -14,18 +17,19 @@ public class BubbleController : MonoBehaviour
 
 	void Start ()
 	{
-		ReInitObject ();
+		InitObject ();
 	}
-
-	public void ReInitObject () 
+	
+	public void InitObject () 
 	{
 		ntfCenter = NotificationCenter.DefaultCenter;
 
 		bubble = SetBubbleObject((int)textureWidth);
 		speed = 0.5f / (int)textureWidth;
 		MoveObj ();
-		ntfCenter.PostNotification (this, GameConstants.onBubbleCreated, gameObject);
 
+		//Notification for texture creation
+		ntfCenter.PostNotification (this, GameConstants.onBubbleCreated, gameObject);
 	}
 
 	public void MoveObj ()
@@ -33,6 +37,7 @@ public class BubbleController : MonoBehaviour
 		StartCoroutine (BubbleMoveWithDelay (delay));
 	}
 
+	//Set type of bubble
 	Bubble SetBubbleObject (int size) 
 	{	
 		return ChooseObjFromSize((GameConstants.GameObjectSizes) size);
@@ -42,8 +47,8 @@ public class BubbleController : MonoBehaviour
 	{
 		bubble = null;
 		Destroy (sprite);
-
 	}
+
 
 	Bubble ChooseObjFromSize (GameConstants.GameObjectSizes size)
 	{
@@ -68,6 +73,7 @@ public class BubbleController : MonoBehaviour
 		}
 		return bubble;
 	}
+
 
 	IEnumerator BubbleMoveWithDelay (float aDelay)
 	{

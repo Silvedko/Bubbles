@@ -9,14 +9,20 @@ public class TouchHandler : MonoBehaviour
 			CheckTouch ();
 	}
 
-
+	//Check mouse/finger touch
 	void CheckTouch()
 	{
 		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 		
 		if(hit.collider != null)
 		{
-			NotificationCenter.DefaultCenter.PostNotification(this, GameConstants.onBubbleBlowNotificationMessage, hit.collider.gameObject);
+			NotificationCenter.DefaultCenter.PostNotification(this, 
+			                                                  GameConstants.onBubbleBlowNotificationMessage, 
+			                                                  hit.collider.gameObject);
+			int points = (int) hit.collider.gameObject.GetComponent<BubbleController> ().textureWidth;
+			points = (int) GameConstants.GameObjectSizes.ExtraLarge / points;
+
+			GameManager.Instance.IncreasePoints(points);
 		}
 	}
 }

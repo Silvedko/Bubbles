@@ -12,8 +12,7 @@ public class BubbleGenerator : MonoBehaviour
 		StartCoroutine (PutBubbleInGameWithDelay (0.5f));
 	}
 
-
-
+	//Method created or if pool is not empty get objects from pool
 	private IEnumerator PutBubbleInGameWithDelay (float delay)
 	{
 		while (true) 
@@ -21,13 +20,10 @@ public class BubbleGenerator : MonoBehaviour
 			yield return new WaitForSeconds (delay);
 			if(GameManager.Instance.objectPool.Count == 0)
 			{
-//				Debug.Log ("Create Object");
 				CreateBubble ();
 			}
 			else
 			{
-//				Debug.Log ("GetFromPool");
-
 				GetBubbleFromPool ();
 			}
 		}
@@ -41,9 +37,7 @@ public class BubbleGenerator : MonoBehaviour
 		bblController.isMoving = true;
 		gO.transform.position = GetRandomPosition (bubbleSize);
 
-		Debug.Log ( " Name = " + gO.name + " position = " + gO.transform.position);
-
-		bblController.ReInitObject ();		
+		bblController.InitObject ();		
 	}
 	
 	private void CreateBubble ()
@@ -53,13 +47,13 @@ public class BubbleGenerator : MonoBehaviour
 		bubbleGo.transform.position = GetRandomPosition (bubbleSize);
 		bubbleGo.name = bubbleGo.GetComponent <BubbleController> ().textureWidth.ToString () + objCounter;
 		objCounter ++;
-//		Debug.Log ( " Name = " + bubbleGo.name + " position = " + bubbleGo.transform.position);
 	}
 
+	//Generate bubble start position
 	private Vector3 GetRandomPosition (int size)
 	{
 		Vector3 startPos;
-		float xPos = Random.Range (-1f + (float)size / 100f / 2f, 1f - (float)size / 100f / 2f);// 100 - Default ratio Pixels to Unit
+		float xPos = Random.Range (-1f + (float)size / 100f / 4f, 1f - (float)size / 100f / 4f);// 100 - Default ratio Pixels to Unit
 		float yPos = 1f + size / 100f / 2f;
 		startPos = new Vector3 (xPos, yPos, 0f);
 		return startPos;

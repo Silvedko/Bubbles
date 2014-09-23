@@ -14,9 +14,4 @@ public class ScoreGUI : MonoBehaviour
 
 		GUI.Label (new Rect(0f, Screen.height - scoreHeight, scoreWidth, scoreHeight), GameManager.Instance.gamePoints.ToString(), myStyle);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
