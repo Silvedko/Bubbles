@@ -6,10 +6,19 @@ public class BubbleGenerator : MonoBehaviour
 {
 	public List <GameObject> prefabs = null;
 	static int objCounter = 0;
+	NotificationCenter ntfCenter;
 
-	void Start () 
+	void Start ()
 	{
+		ntfCenter = NotificationCenter.DefaultCenter;
+		ntfCenter.AddObserver (this, GameConstants.onTextureCreated);
+	}
+
+	void OnTextureCreated () 
+	{
+		Debug.Log ("OnTextureCreate");
 		StartCoroutine (PutBubbleInGameWithDelay (0.5f));
+		ntfCenter.RemoveObserver (this, GameConstants.onTextureCreated);
 	}
 
 	//Method created or if pool is not empty get objects from pool

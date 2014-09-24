@@ -4,82 +4,54 @@ using System.Collections.Generic;
 
 public class TextureGenerator : MonoBehaviour 
 {
-	public BubbleController bblCntroller;
-	public Shader maskShader;
+	private int texturesCount = 4;
+	private List <Color> colors = null;	
+	private int size;
+	private NotificationCenter ntfCenter;
+	private bool stopNotifications = false;
 
-	private Sprite gOSprite; 
-	private Texture2D generatedTexture;
-	private int textureWidth;
-	private SpriteRenderer sRenderer;
-	private List <Color> colors = null;
-
-	NotificationCenter ntfCenter;
-
-	void Awake ()
+	void Start ()
 	{
 		ntfCenter = NotificationCenter.DefaultCenter;
-		ntfCenter.AddObserver (this, GameConstants.onBubbleCreated);
-		sRenderer = gameObject.GetComponent<SpriteRenderer> ();
-	}
-
-	void OnBubbleCreated () 
-	{
-		Init ();
-	}
-
-	void OnDisable ()
-	{
-		Destroy (generatedTexture);
-		Destroy (gOSprite);
-		colors.Clear();
-		colors.TrimExcess ();
-	}
-
-	void OnDestroy ()
-	{
-		if(ntfCenter != null && !ntfCenter.Equals (null))
-			ntfCenter.RemoveObserver (this, GameConstants.onBubbleCreated);
-	}
-
-	void Init ()
-	{
-
 		colors = new List<Color> ();
-		textureWidth = (int) bblCntroller.textureWidth;
-		GenerateTexture (textureWidth);
-		
-		gOSprite = Sprite.Create (generatedTexture, new Rect (0.0f, 0.0f, textureWidth, textureWidth), new Vector2(0.5f, 0.5f));
-		
-		gameObject.GetComponent<SpriteRenderer> ().sprite = gOSprite;
-		renderer.material = CreateNewMaterial ();
-		renderer.material.mainTexture = generatedTexture;
-		sRenderer.material.SetFloat ("_Cutoff", 0.5f);
-		if(sRenderer.material.HasProperty("_Mask"))
-			sRenderer.material.SetTexture ("_Mask", (Texture) GetMaskFromSize (textureWidth));
+
+		InvokeRepeating ("GenerateTexturePack", 1f, 5f );
 	}
 
-	private Texture2D GetMaskFromSize (int size)
+	void GenerateTexturePack ()
 	{
-		Texture2D tempTexture = null;
-		foreach (var neededTexture in GameManager.Instance.textures) 
+		for (int i = 1; i <= texturesCount; i++) 
 		{
-			if (neededTexture.width == size)
-				tempTexture = (Texture2D) neededTexture;
+			size = (int) Mathf.Pow(2, i+5);		
+			StartCoroutine (GenerateTexture (size));
 		}
-		return tempTexture;
 	}
-	
 
-	private void GenerateTexture (int textureWidth)
+	private IEnumerator GenerateTexture (int textureWidth)
 	{
-		var texture = new Texture2D(textureWidth, textureWidth, TextureFormat.ARGB32, false);
-		texture = MakeTopTexture (texture);
-		
-		texture.Apply();
-		generatedTexture = texture;
+		Debug.Log ("generate COLORS!");
+			
+		colors.Clear ();
+		colors.TrimExcess ();
+		colors = new List<Color> ();	
+		GameManager.Instance.generatedTextures.Clear ();
+		GameManager.Instance.generatedTextures.TrimExcess ();
+
+		var texture = new Texture2D (textureWidth, textureWidth, TextureFormat.ARGB32, false);
+		texture = MakeTexture (texture);
+		texture.Apply ();
+
+		yield return texture;
+		GameManager.Instance.generatedTextures.Add (texture);
+
+		if (GameManager.Instance.generatedTextures.Count == texturesCount && !stopNotifications) 
+		{
+			ntfCenter.PostNotification (this, GameConstants.onTextureCreated, null);
+			stopNotifications = true;
+		}
 	}
 		
-	private Texture2D MakeTopTexture (Texture2D texture)
+	private Texture2D MakeTexture (Texture2D texture)
 	{
 		int randCol = Random.Range (0, 255);
 		for (int i = 0; i < texture.width * texture.height; i++) 
@@ -100,10 +72,5 @@ public class TextureGenerator : MonoBehaviour
 		float b = ((randColor + counter) % 255) / 255f;
 
 		return new Color (r, g, b, 1.0f);
-	}
-
-	private Material CreateNewMaterial ()
-	{
-		return new Material (maskShader);
 	}
 }

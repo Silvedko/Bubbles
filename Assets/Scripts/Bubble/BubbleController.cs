@@ -4,7 +4,6 @@ using System.Collections;
 public class BubbleController : MonoBehaviour 
 {
 	public Bubble bubble;
-	public Sprite sprite;
 
 	//for stop moving
 	public bool isMoving = true;
@@ -23,13 +22,11 @@ public class BubbleController : MonoBehaviour
 	public void InitObject () 
 	{
 		ntfCenter = NotificationCenter.DefaultCenter;
-
 		bubble = SetBubbleObject((int)textureWidth);
 		speed = 0.5f / (int)textureWidth;
 		MoveObj ();
 
 		//Notification for texture creation
-		ntfCenter.PostNotification (this, GameConstants.onBubbleCreated, gameObject);
 	}
 
 	public void MoveObj ()
@@ -45,11 +42,7 @@ public class BubbleController : MonoBehaviour
 
 	void OnDisable ()
 	{
-		var sRenderer = gameObject.GetComponent <SpriteRenderer> ();
-		sRenderer.material.mainTexture = null;
 		bubble = null;
-		Destroy (sRenderer.material);
-		Destroy (sprite);
 	}
 
 

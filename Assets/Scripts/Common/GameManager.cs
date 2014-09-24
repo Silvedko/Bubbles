@@ -32,9 +32,12 @@ public class GameManager : MonoSingleton <GameManager>
 
 	//Textures from www
 	public List <Texture> textures = null;
-
+	
 	//Counter for url strings for www.textures in GameConstants.cs
 	public int linkCounter = 0;
+
+	// Textures from Texture generator
+	public List <Texture2D> generatedTextures = null;
 
 	public int gamePoints = 0;
 
@@ -56,6 +59,7 @@ public class GameManager : MonoSingleton <GameManager>
 		BubbleDropped = 0;
 		objectPool = new List<GameObject> ();
 		textures = new List<Texture> ();
+		generatedTextures = new List<Texture2D> ();
 	}
 
 	void OnLevelWasLoaded (int level)
