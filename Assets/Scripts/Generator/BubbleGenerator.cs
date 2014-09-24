@@ -13,12 +13,11 @@ public class BubbleGenerator : MonoBehaviour
 		ntfCenter = NotificationCenter.DefaultCenter;
 		ntfCenter.AddObserver (this, GameConstants.onTextureCreated);
 	}
-
+	
 	void OnTextureCreated () 
 	{
 		Debug.Log ("OnTextureCreate");
 		StartCoroutine (PutBubbleInGameWithDelay (0.5f));
-		ntfCenter.RemoveObserver (this, GameConstants.onTextureCreated);
 	}
 
 	//Method created or if pool is not empty get objects from pool

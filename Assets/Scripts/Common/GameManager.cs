@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoSingleton <GameManager>
 {
+	public bool stopNotifications = false;
+	
 	//Dropped bubbles
 	private int bubbleDropped;
 	public int BubbleDropped

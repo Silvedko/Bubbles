@@ -5,17 +5,16 @@ using System.Collections.Generic;
 public class TextureGenerator : MonoBehaviour 
 {
 	private int texturesCount = 4;
-	private List <Color> colors = null;	
+	private static List <Color> colors = null;	
 	private int size;
 	private NotificationCenter ntfCenter;
-	private bool stopNotifications = false;
 
 	void Start ()
 	{
 		ntfCenter = NotificationCenter.DefaultCenter;
 		colors = new List<Color> ();
 
-		InvokeRepeating ("GenerateTexturePack", 1f, 5f );
+		InvokeRepeating ("GenerateTexturePack", 0.5f, 10f );
 	}
 
 	void GenerateTexturePack ()
@@ -29,11 +28,9 @@ public class TextureGenerator : MonoBehaviour
 
 	private IEnumerator GenerateTexture (int textureWidth)
 	{
-		Debug.Log ("generate COLORS!");
-			
 		colors.Clear ();
 		colors.TrimExcess ();
-		colors = new List<Color> ();	
+			
 		GameManager.Instance.generatedTextures.Clear ();
 		GameManager.Instance.generatedTextures.TrimExcess ();
 
@@ -44,10 +41,10 @@ public class TextureGenerator : MonoBehaviour
 		yield return texture;
 		GameManager.Instance.generatedTextures.Add (texture);
 
-		if (GameManager.Instance.generatedTextures.Count == texturesCount && !stopNotifications) 
+		if (GameManager.Instance.generatedTextures.Count == texturesCount && !GameManager.Instance.stopNotifications) 
 		{
 			ntfCenter.PostNotification (this, GameConstants.onTextureCreated, null);
-			stopNotifications = true;
+			GameManager.Instance.stopNotifications = true;
 		}
 	}
 		

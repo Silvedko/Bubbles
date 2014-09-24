@@ -17,26 +17,38 @@ public class TextureController : MonoBehaviour
 
 	void Start ()
 	{
+
 		sRenderer = gameObject.GetComponent <SpriteRenderer> ();
 		bblController = gameObject.GetComponent <BubbleController> ();
 		textureWidth = (int) bblController.textureWidth;
-		SetTextureAndMask ();
+		SetTextureToObj ();
 		SetMask();
 	}
-	
 
-	void SetTextureAndMask ()
+	void OnEnable ()
+	{
+		SetTextureToObj ();
+	}
+
+	void OnDisable ()
+	{
+		renderer.material.mainTexture = null;
+		sRenderer.sprite = null;
+	}
+
+
+	void SetTextureToObj ()
 	{
 		foreach (var texture in GameManager.Instance.generatedTextures)
 			if (texture.width == textureWidth) 
 			{
 				objTexture = (Texture2D) texture;	
-				SetTexture (objTexture);
+				SetTextureToObj (objTexture);
 			}
 	}
 
 
-	private void SetTexture (Texture2D texture)
+	private void SetTextureToObj (Texture2D texture)
 	{
 		sRenderer.sprite = Sprite.Create (texture, new Rect (0f, 0f, texture.width, texture.width), new Vector2 (0.5f, 0.5f));
 		renderer.material.mainTexture = texture;
@@ -60,9 +72,5 @@ public class TextureController : MonoBehaviour
 			sRenderer.material.SetTexture ("_Mask", (Texture)GetMaskFromSize (textureWidth));
 	}
 
-	void OnDisable ()
-	{
-//		Destroy (sRenderer.sprite);
-//		Destroy (sRenderer.material.mainTexture);
-	}
+
 }

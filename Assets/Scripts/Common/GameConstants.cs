@@ -18,6 +18,7 @@ public class GameConstants
 		public static string onBubbleDeniedNotificationMessage = "OnBubbleDenied";
 		public static string onTextureDownloading = "OnLoadComplete";
 		public static string onTextureCreated = "OnTextureCreated";
+		public static string onTextureChanged = "OnTextureChanged";
 
 	#endregion
 
