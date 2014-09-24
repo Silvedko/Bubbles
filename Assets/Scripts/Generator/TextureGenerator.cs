@@ -19,6 +19,12 @@ public class TextureGenerator : MonoBehaviour
 
 	void GenerateTexturePack ()
 	{
+		colors.Clear ();
+		colors.TrimExcess ();
+		
+		GameManager.Instance.generatedTextures.Clear ();
+		GameManager.Instance.generatedTextures.TrimExcess ();
+
 		for (int i = 1; i <= texturesCount; i++) 
 		{
 			size = (int) Mathf.Pow(2, i+5);		
@@ -28,12 +34,6 @@ public class TextureGenerator : MonoBehaviour
 
 	private IEnumerator GenerateTexture (int textureWidth)
 	{
-		colors.Clear ();
-		colors.TrimExcess ();
-			
-		GameManager.Instance.generatedTextures.Clear ();
-		GameManager.Instance.generatedTextures.TrimExcess ();
-
 		var texture = new Texture2D (textureWidth, textureWidth, TextureFormat.ARGB32, false);
 		texture = MakeTexture (texture);
 		texture.Apply ();

@@ -16,7 +16,6 @@ public class BubbleGenerator : MonoBehaviour
 	
 	void OnTextureCreated () 
 	{
-		Debug.Log ("OnTextureCreate");
 		StartCoroutine (PutBubbleInGameWithDelay (0.5f));
 	}
 
